@@ -1,0 +1,5 @@
+- add Long description for subcommands
+- add custom help for rootCMD?
+- research configFile for persistentFLags?
+- rename process.go && daemon.go
+- refactor .simprc -> test for other shells, not just bash?
