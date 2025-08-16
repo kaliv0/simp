@@ -8,7 +8,6 @@ import (
 // TODO: move to db.go
 
 func GetDbPath() string {
-	// resolve config dir
 	var subDirsList []string
 	xdfConfig := os.Getenv("XDG_CONFIG_HOME")
 	if xdfConfig != "" {
@@ -23,16 +22,9 @@ func GetDbPath() string {
 	subDirsList = append(subDirsList, "simp")
 	configDir := filepath.Join(subDirsList...)
 
-	// find/create .config/simp
-	err := os.MkdirAll(configDir, 0744) // TODO: modify perm
+	err := os.MkdirAll(configDir, 0744) // TODO: modify perm, skip calling mkdir if exists?
 	if err != nil {
 		// TODO
 	}
-	// create simp.db if not exists
-	dbPath := filepath.Join(configDir, "simp.db")
-	_, err = os.OpenFile(dbPath, os.O_RDWR|os.O_CREATE, 0644)
-	if err != nil {
-		// TODO
-	}
-	return dbPath
+	return filepath.Join(configDir, "simp.db")
 }

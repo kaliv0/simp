@@ -14,12 +14,15 @@ type Repository struct {
 	db *gorm.DB
 }
 
-func (r *Repository) Write(b []byte) {
-	r.db.Create(&Clipboard{ClipText: string(b)})
-	// TODO: why not pass just string(bytes)?
+func (r *Repository) Write(item []byte) {
+	// todo:why not pass just string(bytes)?
+	r.db.Create(&Clipboard{ClipText: string(item)})
+
+	// TODO: use upsert -> if item already in db -> change update_timestamp
 }
 
 func NewRepository(dbPath string, shouldMigrate bool) *Repository {
+	// create simp.db if not exists
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 	if err != nil {
 		// TODO

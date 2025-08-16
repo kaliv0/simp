@@ -2,12 +2,13 @@ package pkg
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/shirou/gopsutil/process"
 	"golang.design/x/clipboard"
 )
+
+// TODO: move to handler.go?
 
 func TrackClipboard(dbPath string) {
 	//create/get new gorm repo handler, migrate if any changes in clipboard text
@@ -20,8 +21,8 @@ func TrackClipboard(dbPath string) {
 	// open new Watch chanel -> NB: tracks text but no images
 	changes := clipboard.Watch(context.Background(), clipboard.FmtText)
 	// loop through && write to db any changes in clipboard
-	for b := range changes {
-		db.Write(b)
+	for item := range changes {
+		db.Write(item)
 	}
 }
 
@@ -36,15 +37,10 @@ func StopAllInstances() {
 			// TODO
 		}
 		if n == "simp" && int32(os.Getpid()) != p.Pid {
-			pid := os.Getpid()
-			fmt.Printf("%d\n", pid)
-			fmt.Printf("%d\n", p.Pid)
-
-			err := p.Terminate()
+			err := p.Kill()
 			if err != nil {
 				//TODO
 			}
 		}
 	}
-	//return fmt.Errorf("process not found")
 }

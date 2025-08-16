@@ -2,12 +2,12 @@
 # Run daemon in background
 simp start
 
-__simp_history() {
+_simp_history() {
     local output
     output=$(simp history "$1")
     READLINE_LINE="${READLINE_LINE}${output}"
     READLINE_POINT=${#READLINE_LINE}
 }
 
-bind -x '"\C-h": __simp_history'
-bind -x '"\C-p": __simp_history --paste'
+bind -x '"\C-h": _simp_history'
+bind -x '"\C-p": _simp_history --paste'
